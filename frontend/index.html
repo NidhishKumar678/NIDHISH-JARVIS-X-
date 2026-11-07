@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nidhish Jarvis X</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #10264b, #020713 75%);
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h1 {
+      color: #39c6ff;
+      font-size: 32px;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: #a9c8e8;
+      margin-bottom: 35px;
+    }
+
+    .orb {
+      width: 190px;
+      height: 190px;
+      margin: 20px auto 35px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff, #28aaff 35%, #073b88 70%);
+      box-shadow: 0 0 30px #159dff, 0 0 80px #0874ff;
+      animation: pulse 2s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from {
+        transform: scale(0.94);
+        box-shadow: 0 0 25px #159dff;
+      }
+      to {
+        transform: scale(1.06);
+        box-shadow: 0 0 65px #159dff;
+      }
+    }
+
+    #status {
+      color: #61d8ff;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #238bca;
+      background: #101d32;
+      color: white;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    button {
+      padding: 13px 24px;
+      margin: 5px;
+      border: none;
+      border-radius: 25px;
+      background: #078eea;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00baff;
+    }
+
+    #response {
+      margin-top: 25px;
+      color: #d3eaff;
+      line-height: 1.6;
+      min-height: 45px;
+    }
+
+    footer {
+      margin-top: 45px;
+      color: #7189a8;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>NIDHISH JARVIS X</h1>
+
+    <p class="subtitle">Your Intelligent AI Assistant</p>
+
+    <div class="orb"></div>
+
+    <p id="status">SYSTEM ONLINE</p>
+
+    <input
+      type="text"
+      id="userInput"
+      placeholder="Ask Jarvis something..."
+    >
+
+    <button onclick="askJarvis()">Ask Jarvis</button>
+
+    <button onclick="speakJarvis()">Speak</button>
+
+    <p id="response">
+      Hello! I am Nidhish Jarvis X. How can I help you?
+    </p>
+
+    <footer>
+      Created by Nidhish Kumar | Nidhish Jarvis X
+    </footer>
+
+  </div>
+
+  <script>
+    function askJarvis() {
+      const input = document.getElementById("userInput").value;
+      const response = document.getElementById("response");
+
+      if (!input.trim()) {
+        response.textContent = "Please enter a question.";
+        return;
+      }
+
+      response.textContent =
+        "Hello! I received your message: " + input +
+        ". My AI intelligence module is under development.";
+    }
+
+    function speakJarvis() {
+      if (!("speechSynthesis" in window)) {
+        document.getElementById("response").textContent =
+          "Speech is not supported in this browser.";
+        return;
+      }
+
+      const text = document.getElementById("response").textContent;
+      const speech = new SpeechSynthesisUtterance(text);
+
+      speech.lang = "en-US";
+      window.speechSynthesis.speak(speech);
+    }
+  </script>
+
+</body>
+</html>
