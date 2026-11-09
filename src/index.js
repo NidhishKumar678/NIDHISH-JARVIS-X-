@@ -1,3 +1,4 @@
+
 const MODEL = "@cf/google/gemma-4-26b-a4b-it";
 
 const CORS_HEADERS = {
@@ -31,10 +32,10 @@ Your responsibilities:
 - Assist with writing, planning and problem solving.
 - Be professional, friendly and conversational.
 - Admit uncertainty instead of inventing facts.
-- Never claim to have performed an action you did not perform.
 - Never claim to have searched the internet unless a search tool
   was actually used.
-- Protect user privacy and do not request passwords or secret keys.
+- Never claim to have performed an action you did not perform.
+- Protect user privacy and never request passwords or secret keys.
 - Keep answers relevant and well structured.
 `;
 
@@ -42,8 +43,7 @@ async function handleChat(request, env) {
   if (!env.AI || typeof env.AI.run !== "function") {
     return json({
       success: false,
-      error: "Workers AI binding is unavailable.",
-      solution: "Check that the AI binding is named AI."
+      error: "Workers AI binding is unavailable."
     }, 503);
   }
 
@@ -64,13 +64,6 @@ async function handleChat(request, env) {
     return json({
       success: false,
       error: "Please enter a message."
-    }, 400);
-  }
-
-  if (message.length > 6000) {
-    return json({
-      success: false,
-      error: "Message is too long."
     }, 400);
   }
 
@@ -131,11 +124,11 @@ async function handleChat(request, env) {
       reply: answer.trim()
     });
 
-  } catch (error) {
+  } catch {
     return json({
       success: false,
       error: "AI request failed.",
-      message: "Please check your Workers AI configuration and try again."
+      message: "Check Workers AI configuration and try again."
     }, 502);
   }
 }
@@ -166,6 +159,147 @@ function checkSpam(message) {
   };
 }
 
+async function handleSpamCheck(request) {
+  try {
+    const body = await request.json();
+    const message = cleanText(body.message, 5000);
+
+    if (!message) {
+      return json({
+        success: false,
+        error: "Please provide a message."
+      }, 400);
+    }
+
+    return json(checkSpam(message));
+
+  } catch {
+    return json({
+      success: false,
+      error: "Invalid JSON request."
+    }, 400);
+  }
+}
+
+async function handleVideoPlan(request, env) {
+  let body;
+
+  try {
+    body = await request.json();
+  } catch {
+    return json({
+      success: false,
+      error: "Invalid JSON request."
+    }, 400);
+  }
+
+  const prompt = cleanText(
+    body.prompt || body.message || body.topic,
+    4000
+  );
+
+  if (!prompt) {
+    return json({
+      success: false,
+      error: "Please describe the video you want."
+    }, 400);
+  }
+
+  if (!env.AI || typeof env.AI.run !== "function") {
+    return json({
+      success: false,
+      error: "Workers AI binding is unavailable."
+    }, 503);
+  }
+
+  try {
+    const result = await env.AI.run(MODEL, {
+      messages: [
+        {
+          role: "system",
+          content: `You are the video planning assistant for NIDHISH JARVIS X.
+Create a practical video production plan.
+Include:
+1. Video title
+2. Concept
+3. Scene-by-scene storyboard
+4. Visual descriptions
+5. Narration suggestions
+6. Background music suggestions
+7. Editing instructions
+Do not claim to generate or render an actual video.`
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      max_tokens: 1000,
+      temperature: 0.7,
+      chat_template_kwargs: {
+        enable_thinking: false
+      }
+    });
+
+    const plan =
+      result?.response ??
+      result?.choices?.[0]?.message?.content;
+
+    if (typeof plan !== "string" || !plan.trim()) {
+      return json({
+        success: false,
+        error: "Unable to create video plan."
+      }, 502);
+    }
+
+    return json({
+      success: true,
+      status: "plan_created",
+      message: plan.trim(),
+      plan: plan.trim(),
+      video_generated: false
+    });
+
+  } catch {
+    return json({
+      success: false,
+      error: "Video planning request failed."
+    }, 502);
+  }
+}
+
+async function handleSearch(request) {
+  let body;
+
+  try {
+    body = await request.json();
+  } catch {
+    return json({
+      success: false,
+      error: "Invalid JSON request."
+    }, 400);
+  }
+
+  const query = cleanText(
+    body.query || body.message,
+    2000
+  );
+
+  if (!query) {
+    return json({
+      success: false,
+      error: "Please enter a search query."
+    }, 400);
+  }
+
+  return json({
+    success: false,
+    status: "not_configured",
+    query,
+    message: "Live web research is not configured yet. Connect a search provider to enable this feature."
+  }, 501);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -183,7 +317,7 @@ export default {
         name: "NIDHISH JARVIS X",
         creator: "Nidhish Kumar",
         status: "online",
-        version: "2.0.0",
+        version: "2.1.0",
         message: "Jarvis X backend is running."
       });
     }
@@ -192,8 +326,30 @@ export default {
       return json({
         status: "healthy",
         backend: "NIDHISH JARVIS X",
+        version: "2.1.0",
         ai_binding: Boolean(env.AI),
-        chat_endpoint: "/api/chat"
+        endpoints: {
+          chat: "/api/chat",
+          search: "/api/search",
+          spam_check: "/api/spam-check",
+          video_plan: "/api/video-plan"
+        }
+      });
+    }
+
+    if (path === "/api/health") {
+      if (request.method !== "GET") {
+        return json({
+          success: false,
+          error: "GET method required."
+        }, 405);
+      }
+
+      return json({
+        success: true,
+        status: "healthy",
+        backend: "NIDHISH JARVIS X",
+        ai_binding: Boolean(env.AI)
       });
     }
 
@@ -216,33 +372,36 @@ export default {
         }, 405);
       }
 
-      try {
-        const body = await request.json();
-        const message = cleanText(body.message, 5000);
-
-        if (!message) {
-          return json({
-            success: false,
-            error: "Please provide a message."
-          }, 400);
-        }
-
-        return json(checkSpam(message));
-
-      } catch {
-        return json({
-          success: false,
-          error: "Invalid JSON request."
-        }, 400);
-      }
+      return handleSpamCheck(request);
     }
 
-    if (path === "/api/search" || path === "/api/video") {
+    if (path === "/api/search") {
+      if (request.method !== "POST") {
+        return json({
+          success: false,
+          error: "POST method required."
+        }, 405);
+      }
+
+      return handleSearch(request);
+    }
+
+    if (path === "/api/video-plan") {
+      if (request.method !== "POST") {
+        return json({
+          success: false,
+          error: "POST method required."
+        }, 405);
+      }
+
+      return handleVideoPlan(request, env);
+    }
+
+    if (path === "/api/video") {
       return json({
         success: false,
         status: "not_configured",
-        service: path,
-        message: "This service requires a separate provider integration."
+        message: "Actual video generation requires a video-generation provider."
       }, 501);
     }
 
