@@ -1,174 +1,1357 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nidhish Jarvis X</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030914">
+<meta name="description" content="NIDHISH JARVIS X - Personal AI Assistant">
+<title>NIDHISH JARVIS X</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      background: radial-gradient(circle at center, #10264b, #020713 75%);
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 500px;
-    }
-
-    h1 {
-      color: #39c6ff;
-      font-size: 32px;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-    }
-
-    .subtitle {
-      color: #a9c8e8;
-      margin-bottom: 35px;
-    }
-
-    .orb {
-      width: 190px;
-      height: 190px;
-      margin: 20px auto 35px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #ffffff, #28aaff 35%, #073b88 70%);
-      box-shadow: 0 0 30px #159dff, 0 0 80px #0874ff;
-      animation: pulse 2s infinite alternate;
-    }
-
-    @keyframes pulse {
-      from {
-        transform: scale(0.94);
-        box-shadow: 0 0 25px #159dff;
-      }
-      to {
-        transform: scale(1.06);
-        box-shadow: 0 0 65px #159dff;
-      }
-    }
-
-    #status {
-      color: #61d8ff;
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #238bca;
-      background: #101d32;
-      color: white;
-      font-size: 16px;
-      margin-bottom: 12px;
-    }
-
-    button {
-      padding: 13px 24px;
-      margin: 5px;
-      border: none;
-      border-radius: 25px;
-      background: #078eea;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #00baff;
-    }
-
-    #response {
-      margin-top: 25px;
-      color: #d3eaff;
-      line-height: 1.6;
-      min-height: 45px;
-    }
-
-    footer {
-      margin-top: 45px;
-      color: #7189a8;
-      font-size: 12px;
-    }
-  </style>
+<style>
+:root {
+  --cyan:#35dfff;
+  --blue:#087dff;
+  --bg:#030914;
+  --panel:rgba(8,23,44,.91);
+  --muted:#91aac6;
+  --green:#36e5ad;
+  --red:#ff647c;
+  --border:#174d78;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse at 50% 25%,#102d55 0%,#061329 43%,#020711 85%);
+  color:#eef8ff;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:-1;
+  opacity:.17;
+  background-image:
+    linear-gradient(rgba(50,180,255,.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(50,180,255,.12) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(transparent,black,transparent);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{
+  position:sticky;top:0;z-index:20;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;padding:17px 5%;
+  background:rgba(3,9,20,.91);
+  border-bottom:1px solid #17436b;
+  backdrop-filter:blur(16px);
+}
+.brand{
+  color:var(--cyan);font-weight:900;letter-spacing:2px;
+  font-size:clamp(16px,3vw,24px);
+  text-shadow:0 0 17px #008cff;
+}
+.header-right{display:flex;align-items:center;gap:12px}
+.connection{
+  font-size:10px;letter-spacing:1.5px;color:var(--green);
+}
+.connection.offline{color:var(--red)}
+main{max-width:1120px;margin:auto;padding:25px 18px 55px}
+.intro{text-align:center;margin:8px 0 4px}
+.intro h2{font-size:12px;letter-spacing:5px;color:#8ccfff}
+.intro p{font-size:11px;color:var(--muted);margin-top:9px}
+.core-area{
+  position:relative;width:300px;height:300px;
+  max-width:90vw;margin:12px auto 0;
+  display:grid;place-items:center;
+}
+.core{
+  width:145px;height:145px;border-radius:50%;z-index:2;
+  display:grid;place-items:center;
+  background:radial-gradient(circle at 38% 28%,#fff 0%,#a9efff 7%,#26bfff 25%,#0758d5 58%,#03122f 86%);
+  box-shadow:0 0 30px #00aaff,0 0 75px #007bff,0 0 125px #0050aa,inset 0 0 25px white;
+  animation:pulse 2.5s ease-in-out infinite alternate;
+}
+.core span{
+  font-weight:900;letter-spacing:2px;font-size:17px;
+  color:white;text-shadow:0 0 12px #fff;
+}
+.ring{
+  position:absolute;border:1px solid #39caff;border-radius:50%;
+  box-shadow:0 0 18px #008cff;
+}
+.ring.one{
+  width:215px;height:215px;border-left-color:transparent;
+  border-right:3px solid #b1efff;animation:spin 5s linear infinite;
+}
+.ring.two{
+  width:255px;height:255px;border-style:dashed;
+  opacity:.7;animation:spin 16s linear infinite reverse;
+}
+.ring.three{
+  width:185px;height:185px;border-top:3px solid white;
+  border-bottom:3px solid transparent;animation:spin 3.5s linear infinite;
+}
+.ring.four{
+  width:285px;height:285px;border-color:#087dff55;
+  border-style:dotted;animation:spin 28s linear infinite;
+}
+.core-area.listening .core{
+  box-shadow:0 0 45px #35ffcb,0 0 110px #00dba8;
+}
+.core-area.thinking .core{animation:pulse .42s infinite alternate}
+.core-area.speaking .ring.one{animation-duration:1.2s}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{
+  from{transform:scale(.94);filter:brightness(.85)}
+  to{transform:scale(1.08);filter:brightness(1.3)}
+}
+#status{
+  text-align:center;color:var(--cyan);font-size:11px;
+  letter-spacing:3px;margin:0 0 24px;min-height:16px;
+}
+.panel{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:17px;padding:20px;margin-bottom:17px;
+  box-shadow:0 0 35px #007bff16;backdrop-filter:blur(14px);
+}
+.panel h3{
+  font-size:12px;letter-spacing:2px;color:var(--cyan);
+  margin-bottom:15px;
+}
+input,select,textarea{
+  width:100%;background:#061426;border:1px solid #246294;
+  border-radius:10px;padding:13px;color:white;outline:none;
+}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--cyan);box-shadow:0 0 12px #00aaff44;
+}
+textarea{resize:vertical;min-height:80px}
+button{
+  background:linear-gradient(120deg,#0865ba,#078de3);
+  border:1px solid #48caff;color:white;padding:11px 15px;
+  border-radius:9px;font-weight:700;font-size:11px;
+  transition:.2s;
+}
+button:hover{filter:brightness(1.2);box-shadow:0 0 15px #00aaff66}
+button:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+button.secondary{background:#102743;border-color:#28577e}
+button.danger{background:#582536;border-color:#a44b68}
+button.green{background:#07583f;border-color:#36e5ad}
+.input-row{display:flex;gap:9px}
+.buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.response{
+  margin-top:16px;padding:15px;min-height:75px;
+  line-height:1.7;background:#041020;border-left:3px solid var(--cyan);
+  border-radius:8px;overflow-wrap:anywhere;white-space:pre-wrap;
+  color:#d8efff;font-size:13px;
+}
+.small{font-size:11px;color:var(--muted);line-height:1.7}
+.label{
+  display:block;color:var(--cyan);font-size:11px;margin:13px 0 7px;
+}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.feature{
+  border:1px solid #19436a;background:#07172b;
+  border-radius:12px;padding:15px;min-width:0;
+}
+.feature strong{display:block;color:#b9eaff;font-size:12px;margin-bottom:7px}
+.feature p{font-size:11px;color:var(--muted);line-height:1.6}
+.feature button{margin-top:12px;width:100%}
+.agent-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.agent{
+  background:#07172b;border:1px solid #19436a;border-radius:10px;
+  padding:12px;text-align:center;min-width:0;
+}
+.agent.active{border-color:var(--cyan);box-shadow:0 0 14px #00aaff33}
+.agent strong{display:block;font-size:11px;color:#c6edff;margin-bottom:5px}
+.agent span{font-size:10px;color:var(--muted)}
+.tag{
+  display:inline-block;border:1px solid #246294;border-radius:20px;
+  padding:5px 9px;font-size:10px;color:#bdeaff;margin:3px;
+}
+.divider{height:1px;background:#17436b;margin:15px 0}
+footer{text-align:center;color:#6885a5;font-size:10px;padding:24px 10px}
+.hidden{display:none!important}
+.notice{
+  padding:11px;border:1px solid #795f2c;background:#332810;
+  border-radius:9px;color:#ffe2a1;font-size:11px;line-height:1.6;
+}
+.switch-row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:10px 0;border-bottom:1px solid #183750;
+  font-size:12px;color:#c9e8ff;
+}
+.switch-row input{width:auto;accent-color:var(--cyan)}
+a{color:var(--cyan);overflow-wrap:anywhere}
+#toast{
+  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+  z-index:50;background:#092542;border:1px solid var(--cyan);
+  border-radius:10px;padding:11px 16px;font-size:12px;
+  box-shadow:0 0 20px #008cff44;max-width:90vw;
+}
+@media(max-width:650px){
+  header{padding:14px}
+  main{padding:18px 12px 40px}
+  .grid{grid-template-columns:1fr}
+  .agent-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .input-row{flex-direction:column}
+  .core-area{transform:scale(.88);margin-top:-8px;margin-bottom:-8px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;
+  animation-iteration-count:1!important;scroll-behavior:auto!important}
+}
+</style>
 </head>
 
 <body>
-
-  <div class="container">
-
-    <h1>NIDHISH JARVIS X</h1>
-
-    <p class="subtitle">Your Intelligent AI Assistant</p>
-
-    <div class="orb"></div>
-
-    <p id="status">SYSTEM ONLINE</p>
-
-    <input
-      type="text"
-      id="userInput"
-      placeholder="Ask Jarvis something..."
-    >
-
-    <button onclick="askJarvis()">Ask Jarvis</button>
-
-    <button onclick="speakJarvis()">Speak</button>
-
-    <p id="response">
-      Hello! I am Nidhish Jarvis X. How can I help you?
-    </p>
-
-    <footer>
-      Created by Nidhish Kumar | Nidhish Jarvis X
-    </footer>
-
+<header>
+  <div class="brand">NIDHISH JARVIS X</div>
+  <div class="header-right">
+    <span class="connection" id="connection">● FRONTEND ONLINE</span>
   </div>
+</header>
 
-  <script>
-    function askJarvis() {
-      const input = document.getElementById("userInput").value;
-      const response = document.getElementById("response");
+<main>
+  <section class="intro">
+    <h2>PERSONAL ARTIFICIAL INTELLIGENCE</h2>
+    <p>JUST A RATHER VERY INTELLIGENT SYSTEM</p>
+  </section>
 
-      if (!input.trim()) {
-        response.textContent = "Please enter a question.";
-        return;
-      }
+  <div class="core-area" id="coreArea" aria-label="Animated Jarvis core">
+    <div class="ring one"></div>
+    <div class="ring two"></div>
+    <div class="ring three"></div>
+    <div class="ring four"></div>
+    <div class="core"><span>J.A.R.V.I.S</span></div>
+  </div>
+  <div id="status">SYSTEM INITIALIZED</div>
 
-      response.textContent =
-        "Hello! I received your message: " + input +
-        ". My AI intelligence module is under development.";
+  <!-- MAIN COMMAND CENTRE -->
+  <section class="panel" id="commandPanel">
+    <h3>JARVIS COMMAND CENTRE</h3>
+    <div class="input-row">
+      <input id="userInput" placeholder="Tell Jarvis what you need..."
+        autocomplete="off" aria-label="Jarvis command">
+      <button id="askButton">EXECUTE</button>
+    </div>
+    <div class="buttons">
+      <button id="voiceButton">🎤 ACTIVATE VOICE</button>
+      <button class="secondary" id="stopButton">STOP LISTENING</button>
+      <button class="secondary" id="speakButton">🔊 SPEAK RESPONSE</button>
+      <button class="secondary" id="stopSpeechButton">STOP SPEECH</button>
+    </div>
+    <div class="response" id="response" aria-live="polite">
+      Welcome to NIDHISH JARVIS X.
+      Your personal AI interface is ready.
+    </div>
+    <p class="small" id="backendStatus">AI backend: Not checked yet.</p>
+  </section>
+
+  <!-- AGENT CONTROL -->
+  <section class="panel">
+    <h3>MULTI-AGENT INTELLIGENCE SYSTEM</h3>
+    <p class="small">
+      Select a specialist for your task. The connected backend must implement
+      the corresponding agent logic.
+    </p>
+    <div class="agent-list" id="agentList" style="margin-top:13px">
+      <button class="agent active" data-agent="auto">
+        <strong>JARVIS CORE</strong><span>Automatic</span>
+      </button>
+      <button class="agent" data-agent="research">
+        <strong>RESEARCH</strong><span>Web & facts</span>
+      </button>
+      <button class="agent" data-agent="coding">
+        <strong>CODING</strong><span>Apps & code</span>
+      </button>
+      <button class="agent" data-agent="creative">
+        <strong>CREATIVE</strong><span>Ideas & design</span>
+      </button>
+      <button class="agent" data-agent="video">
+        <strong>VIDEO</strong><span>Video workflows</span>
+      </button>
+      <button class="agent" data-agent="advertising">
+        <strong>AD STUDIO</strong><span>Campaigns</span>
+      </button>
+      <button class="agent" data-agent="security">
+        <strong>SECURITY</strong><span>Scam & privacy</span>
+      </button>
+      <button class="agent" data-agent="productivity">
+        <strong>PRODUCTIVITY</strong><span>Tasks & writing</span>
+      </button>
+    </div>
+    <p class="small" style="margin-top:12px" id="selectedAgent">
+      Selected agent: Jarvis Core (automatic routing)
+    </p>
+  </section>
+
+  <!-- APP LAUNCHER -->
+  <section class="panel">
+    <h3>SMART APP & WEBSITE LAUNCHER</h3>
+    <p class="small">
+      Open supported websites. Native application control requires a separately
+      installed desktop companion and your permission.
+    </p>
+    <label class="label" for="appSelect">SELECT APPLICATION</label>
+    <select id="appSelect">
+      <option value="">Choose an application...</option>
+      <option value="google">Google</option>
+      <option value="youtube">YouTube</option>
+      <option value="gmail">Gmail</option>
+      <option value="drive">Google Drive</option>
+      <option value="docs">Google Docs</option>
+      <option value="whatsapp">WhatsApp Web</option>
+      <option value="github">GitHub</option>
+      <option value="chatgpt">ChatGPT</option>
+      <option value="canva">Canva</option>
+      <option value="outlook">Outlook</option>
+      <option value="spotify">Spotify Web</option>
+      <option value="instagram">Instagram</option>
+    </select>
+    <div class="buttons">
+      <button id="launchAppButton">OPEN APPLICATION</button>
+    </div>
+    <label class="label" for="customUrl">OPEN A WEBSITE ADDRESS</label>
+    <input id="customUrl" placeholder="Example: https://example.com">
+    <div class="buttons">
+      <button class="secondary" id="openUrlButton">OPEN WEBSITE</button>
+    </div>
+    <div class="notice" style="margin-top:13px">
+      Banking, payment and wallet services are intentionally excluded from
+      this launcher. Never provide passwords or OTPs to Jarvis.
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section class="panel">
+    <h3>ADVANCED WEB RESEARCH</h3>
+    <input id="researchInput" placeholder="What should Jarvis research?">
+    <div class="buttons">
+      <button id="researchButton">START RESEARCH</button>
+    </div>
+    <p class="small" style="margin-top:9px">
+      Research requires a configured backend search service. Verify important
+      information against its original sources.
+    </p>
+  </section>
+
+  <!-- CODING STUDIO -->
+  <section class="panel">
+    <h3>AI APP & CODING STUDIO</h3>
+    <label class="label" for="codingIdea">DESCRIBE THE APP OR CODE YOU WANT</label>
+    <textarea id="codingIdea" placeholder="Example: Create a responsive student learning dashboard with a quiz system..."></textarea>
+    <div class="buttons">
+      <button id="codingButton">GENERATE APP / CODE</button>
+    </div>
+    <p class="small" style="margin-top:9px">
+      Jarvis can request code generation from its AI backend. Review and test
+      generated code before running or publishing it.
+    </p>
+  </section>
+
+  <!-- VIDEO STUDIO -->
+  <section class="panel">
+    <h3>AI VIDEO & CINEMATIC STUDIO</h3>
+    <label class="label" for="videoIdea">VIDEO CONCEPT</label>
+    <textarea id="videoIdea" placeholder="Describe your scenes, visual style, duration, camera movement and desired result..."></textarea>
+    <label class="label" for="videoStyle">VISUAL STYLE</label>
+    <select id="videoStyle">
+      <option value="cinematic">Cinematic / Photorealistic</option>
+      <option value="3d">3D Animation</option>
+      <option value="vfx">Visual Effects / Sci-fi</option>
+      <option value="commercial">Commercial Advertisement</option>
+      <option value="documentary">Documentary</option>
+      <option value="social">Social Media Short</option>
+    </select>
+    <div class="buttons">
+      <button id="videoButton">CREATE VIDEO PLAN</button>
+    </div>
+    <p class="small" style="margin-top:9px">
+      This creates a production request or plan. Actual high-quality video
+      rendering requires a connected video-generation provider. Professional
+      VFX quality depends on the provider, tools and production workflow.
+    </p>
+  </section>
+
+  <!-- AD STUDIO -->
+  <section class="panel">
+    <h3>AI ADVERTISING & CREATIVE STUDIO</h3>
+    <label class="label" for="adIdea">PRODUCT, CHANNEL OR CAMPAIGN</label>
+    <textarea id="adIdea" placeholder="Describe the product, audience and purpose of the advertisement..."></textarea>
+    <label class="label" for="adFormat">CONTENT TYPE</label>
+    <select id="adFormat">
+      <option value="video-ad">Video advertisement</option>
+      <option value="poster">Poster / promotional design</option>
+      <option value="youtube">YouTube thumbnail and title</option>
+      <option value="social">Social media campaign</option>
+      <option value="script">Advertisement script</option>
+    </select>
+    <div class="buttons">
+      <button id="adButton">CREATE AD CONCEPT</button>
+    </div>
+    <p class="small" style="margin-top:9px">
+      Campaign creation is separate from publishing or purchasing advertisements.
+      Publishing and spending require your approval.
+    </p>
+  </section>
+
+  <!-- SECURITY -->
+  <section class="panel">
+    <h3>SCAM & SECURITY PROTECTION</h3>
+    <label class="label" for="securityInput">PASTE A SUSPICIOUS MESSAGE OR LINK</label>
+    <textarea id="securityInput" placeholder="Paste the message for a security review. Remove personal details first."></textarea>
+    <div class="buttons">
+      <button id="securityButton">ANALYSE THREAT</button>
+    </div>
+    <div class="response" id="securityResult">
+      Security system ready. No message has been analysed yet.
+    </div>
+    <p class="small" style="margin-top:9px">
+      Automated analysis cannot guarantee that a message or link is safe.
+      Do not open suspicious links or share OTPs, passwords or banking details.
+    </p>
+  </section>
+
+  <!-- MESSAGE ASSISTANT -->
+  <section class="panel">
+    <h3>WHATSAPP MESSAGE ASSISTANT</h3>
+    <label class="label" for="friendNumber">RECIPIENT NUMBER WITH COUNTRY CODE</label>
+    <input id="friendNumber" placeholder="Example: 919876543210" inputmode="tel">
+    <label class="label" for="friendMessage">MESSAGE</label>
+    <textarea id="friendMessage" placeholder="Write the message to prepare..."></textarea>
+    <div class="buttons">
+      <button id="prepareMessageButton">PREPARE WHATSAPP DRAFT</button>
+    </div>
+    <p class="small" style="margin-top:9px">
+      Jarvis prepares a draft. You review and send it yourself.
+    </p>
+  </section>
+
+  <!-- PRIVACY -->
+  <section class="panel">
+    <h3>PRIVACY & PERMISSION CONTROL</h3>
+    <p class="small">Choose which optional browser features Jarvis may use.</p>
+    <div class="switch-row">
+      <span>Local conversation memory</span>
+      <input type="checkbox" id="memoryPermission">
+    </div>
+    <div class="switch-row">
+      <span>Voice recognition permission</span>
+      <input type="checkbox" id="voicePermission">
+    </div>
+    <div class="switch-row">
+      <span>Text-to-speech responses</span>
+      <input type="checkbox" id="speechPermission">
+    </div>
+    <div class="buttons">
+      <button class="secondary" id="exportMemoryButton">EXPORT MEMORY</button>
+      <button class="danger" id="clearMemoryButton">CLEAR MEMORY</button>
+    </div>
+    <p class="small" id="memoryStatus" style="margin-top:12px">
+      Local memory: DISABLED
+    </p>
+    <div class="notice" style="margin-top:12px">
+      Browser memory is stored on this device. It is not encrypted storage.
+      Clearing it does not delete information already sent to external services.
+    </div>
+  </section>
+
+  <!-- LANGUAGE -->
+  <section class="panel">
+    <h3>MULTILINGUAL SETTINGS</h3>
+    <label class="label" for="language">VOICE & RESPONSE LANGUAGE</label>
+    <select id="language">
+      <option value="en-IN">English (India)</option>
+      <option value="en-US">English (US)</option>
+      <option value="hi-IN">Hindi</option>
+      <option value="ta-IN">Tamil</option>
+      <option value="te-IN">Telugu</option>
+      <option value="ml-IN">Malayalam</option>
+      <option value="fr-FR">French</option>
+      <option value="de-DE">German</option>
+      <option value="es-ES">Spanish</option>
+      <option value="ja-JP">Japanese</option>
+      <option value="ar-SA">Arabic</option>
+    </select>
+    <p class="small" style="margin-top:10px">
+      Actual language quality depends on the connected AI and speech services.
+    </p>
+  </section>
+
+  <!-- SYSTEM -->
+  <section class="panel">
+    <h3>SYSTEM DIAGNOSTICS</h3>
+    <div class="grid">
+      <div class="feature">
+        <strong>FRONTEND</strong>
+        <p id="frontendDiagnostic">Loading...</p>
+      </div>
+      <div class="feature">
+        <strong>BACKEND</strong>
+        <p id="backendDiagnostic">Not checked</p>
+      </div>
+      <div class="feature">
+        <strong>VOICE SUPPORT</strong>
+        <p id="voiceDiagnostic">Checking...</p>
+      </div>
+      <div class="feature">
+        <strong>SECURE CONTEXT</strong>
+        <p id="secureDiagnostic">Checking...</p>
+      </div>
+    </div>
+    <div class="buttons">
+      <button class="secondary" id="healthButton">CHECK BACKEND</button>
+      <button class="danger" id="stopAllButton">STOP JARVIS ACTIVITY</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  CREATED BY NIDHISH KUMAR<br>
+  NIDHISH JARVIS X © 2026<br>
+  PRIVACY FIRST • PERMISSION BASED • BUILT FOR THE FUTURE
+</footer>
+
+<div id="toast" class="hidden" role="status"></div>
+
+<script>
+"use strict";
+
+/* =========================================
+   NIDHISH JARVIS X - FRONTEND ENGINE
+   API keys must NEVER be placed in this file.
+   ========================================= */
+
+const CONFIG = Object.freeze({
+  // Replace this with your deployed backend URL.
+  // Example: https://your-worker.workers.dev
+  apiBase: "",
+  timeout: 45000,
+  maxHistory: 25,
+  maxInputLength: 12000
+});
+
+const $ = id => document.getElementById(id);
+
+const state = {
+  busy:false,
+  selectedAgent:"auto",
+  recognition:null,
+  listening:false,
+  memory:false,
+  voiceAllowed:false,
+  speechAllowed:false,
+  lastResponse:"",
+  activeController:null,
+  toastTimer:null
+};
+
+const APPS = Object.freeze({
+  google:"https://www.google.com/",
+  youtube:"https://www.youtube.com/",
+  gmail:"https://mail.google.com/",
+  drive:"https://drive.google.com/",
+  docs:"https://docs.google.com/",
+  whatsapp:"https://web.whatsapp.com/",
+  github:"https://github.com/",
+  chatgpt:"https://chatgpt.com/",
+  canva:"https://www.canva.com/",
+  outlook:"https://outlook.live.com/",
+  spotify:"https://open.spotify.com/",
+  instagram:"https://www.instagram.com/"
+});
+
+const BLOCKED_APP_TERMS = [
+  "google pay","gpay","phonepe","paytm","upi",
+  "banking","bank account","wallet","payment app"
+];
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+/* =========================================
+   UI HELPERS
+   ========================================= */
+
+function showToast(message){
+  const toast=$("toast");
+  toast.textContent=message;
+  toast.classList.remove("hidden");
+  clearTimeout(state.toastTimer);
+  state.toastTimer=setTimeout(()=>toast.classList.add("hidden"),3200);
+}
+
+function setStatus(message){
+  $("status").textContent=message;
+}
+
+function displayMessage(message){
+  const safe=String(message ?? "No response received.");
+  $("response").textContent=safe;
+  state.lastResponse=safe;
+}
+
+function setThinking(active){
+  $("coreArea").classList.toggle("thinking",active);
+  if(active)setStatus("PROCESSING REQUEST...");
+  else if(!state.listening)setStatus("SYSTEM ONLINE");
+}
+
+function setConnection(online){
+  const element=$("connection");
+  element.textContent=online?"● BACKEND CONNECTED":"● FRONTEND ONLINE";
+  element.classList.toggle("offline",!online);
+  $("backendDiagnostic").textContent=
+    online?"Connected":"Not connected";
+  $("backendStatus").textContent=
+    online?"AI backend: Connected":"AI backend: Not connected";
+}
+
+function safeOpen(url){
+  // Only allow ordinary HTTPS destinations.
+  try{
+    const parsed=new URL(url);
+    if(parsed.protocol!=="https:")throw new Error("HTTPS required");
+    window.open(parsed.href,"_blank","noopener,noreferrer");
+  }catch(error){
+    showToast("This website address is not allowed.");
+  }
+}
+
+function getLanguage(){
+  return $("language").value || "en-IN";
+}
+
+/* =========================================
+   BACKEND REQUEST ENGINE
+   ========================================= */
+
+function getApiUrl(endpoint){
+  const base=CONFIG.apiBase.trim().replace(/\/+$/,"");
+  if(!base)return "/api/"+endpoint;
+  return base+"/api/"+endpoint;
+}
+
+async function apiRequest(endpoint,payload={}){
+  if(state.activeController)state.activeController.abort();
+
+  const controller=new AbortController();
+  state.activeController=controller;
+
+  const timeout=setTimeout(
+    ()=>controller.abort(),
+    CONFIG.timeout
+  );
+
+  try{
+    const result=await fetch(getApiUrl(endpoint),{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      credentials:"omit",
+      cache:"no-store",
+      signal:controller.signal,
+      body:JSON.stringify(payload)
+    });
+
+    if(!result.ok){
+      throw new Error("Backend returned HTTP "+result.status);
     }
 
-    function speakJarvis() {
-      if (!("speechSynthesis" in window)) {
-        document.getElementById("response").textContent =
-          "Speech is not supported in this browser.";
-        return;
-      }
+    const data=await result.json();
 
-      const text = document.getElementById("response").textContent;
-      const speech = new SpeechSynthesisUtterance(text);
-
-      speech.lang = "en-US";
-      window.speechSynthesis.speak(speech);
+    if(!data || typeof data!=="object"){
+      throw new Error("Invalid backend response");
     }
-  </script>
 
+    setConnection(true);
+    return data;
+
+  }catch(error){
+    if(error.name==="AbortError"){
+      throw error;
+    }
+    setConnection(false);
+    throw error;
+
+  }finally{
+    clearTimeout(timeout);
+    if(state.activeController===controller){
+      state.activeController=null;
+    }
+  }
+}
+
+/* =========================================
+   LOCAL MEMORY
+   ========================================= */
+
+function getHistory(){
+  try{
+    const data=JSON.parse(localStorage.getItem("njx_history")||"[]");
+    return Array.isArray(data)?data.slice(-CONFIG.maxHistory):[];
+  }catch{
+    return [];
+  }
+}
+
+function saveHistory(question,answer){
+  if(!state.memory)return;
+
+  try{
+    const history=getHistory();
+    history.push({
+      question:String(question).slice(0,3000),
+      answer:String(answer).slice(0,6000),
+      timestamp:new Date().toISOString()
+    });
+    localStorage.setItem(
+      "njx_history",
+      JSON.stringify(history.slice(-CONFIG.maxHistory))
+    );
+  }catch(error){
+    showToast("Unable to save local memory.");
+  }
+}
+
+function updateMemory(){
+  state.memory=$("memoryPermission").checked;
+  localStorage.setItem("njx_memory_enabled",String(state.memory));
+  $("memoryStatus").textContent=
+    "Local memory: "+(state.memory?"ENABLED":"DISABLED");
+}
+
+function clearMemory(){
+  if(!confirm("Permanently clear Jarvis conversation history stored in this browser?"))return;
+  localStorage.removeItem("njx_history");
+  $("memoryPermission").checked=false;
+  updateMemory();
+  displayMessage("Local Jarvis conversation history cleared.");
+  showToast("Local memory cleared.");
+}
+
+function exportMemory(){
+  const history=getHistory();
+  const blob=new Blob(
+    [JSON.stringify(history,null,2)],
+    {type:"application/json"}
+  );
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+  link.href=url;
+  link.download="nidhish-jarvis-memory.json";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+/* =========================================
+   AGENT SELECTION & ORCHESTRATION
+   ========================================= */
+
+function selectAgent(agent){
+  state.selectedAgent=agent;
+  document.querySelectorAll(".agent").forEach(button=>{
+    button.classList.toggle("active",button.dataset.agent===agent);
+  });
+
+  const labels={
+    auto:"Jarvis Core (automatic routing)",
+    research:"Research Agent",
+    coding:"Coding Agent",
+    creative:"Creative Agent",
+    video:"Video Agent",
+    advertising:"Advertising Agent",
+    security:"Security Agent",
+    productivity:"Productivity Agent"
+  };
+
+  $("selectedAgent").textContent=
+    "Selected agent: "+(labels[agent]||"Jarvis Core");
+}
+
+async function runAI(message,agent="auto",extra={}){
+  if(state.busy){
+    showToast("Jarvis is already processing a request.");
+    return null;
+  }
+
+  const clean=String(message).trim().slice(0,CONFIG.maxInputLength);
+  if(!clean)return null;
+
+  state.busy=true;
+  $("askButton").disabled=true;
+  setThinking(true);
+  displayMessage("Jarvis is processing your request...");
+
+  try{
+    const data=await apiRequest("chat",{
+      message:clean,
+      agent,
+      language:getLanguage(),
+      history:state.memory?getHistory():[],
+      context:extra
+    });
+
+    const answer=typeof data.reply==="string"
+      ?data.reply
+      :typeof data.message==="string"
+        ?data.message
+        :"The backend did not return a readable response.";
+
+    displayMessage(answer);
+    saveHistory(clean,answer);
+    return data;
+
+  }catch(error){
+    const message=error.name==="AbortError"
+      ?"Request cancelled or timed out."
+      :"Jarvis AI backend is unavailable. Check the backend URL and deployment.";
+    displayMessage(message);
+    return null;
+
+  }finally{
+    state.busy=false;
+    $("askButton").disabled=false;
+    setThinking(false);
+  }
+}
+
+async function askJarvis(){
+  const message=$("userInput").value.trim();
+  if(!message)return;
+
+  $("userInput").value="";
+
+  if(await handleLocalCommand(message))return;
+
+  await runAI(message,state.selectedAgent);
+}
+
+/* =========================================
+   LOCAL COMMANDS
+   ========================================= */
+
+async function handleLocalCommand(message){
+  const text=message.trim();
+  const lower=text.toLowerCase();
+
+  if(/^(stop|stop everything|stop jarvis)$/i.test(text)){
+    stopAll();
+    displayMessage("Jarvis activities stopped.");
+    return true;
+  }
+
+  if(/^(scroll down|scroll down please)$/i.test(text)){
+    window.scrollBy({top:Math.round(window.innerHeight*.75),behavior:"smooth"});
+    displayMessage("Scrolling down this Jarvis page.");
+    return true;
+  }
+
+  if(/^(scroll up|go to top)$/i.test(text)){
+    window.scrollTo({top:0,behavior:"smooth"});
+    displayMessage("Scrolling to the top.");
+    return true;
+  }
+
+  if(/^(clear memory|delete memory)$/i.test(text)){
+    clearMemory();
+    return true;
+  }
+
+  if(/^(open|launch)\s+whatsapp$/i.test(text)){
+    launchApp("whatsapp");
+    return true;
+  }
+
+  if(/^(open|launch)\s+youtube$/i.test(text)){
+    launchApp("youtube");
+    return true;
+  }
+
+  if(/^(open|launch)\s+google$/i.test(text)){
+    launchApp("google");
+    return true;
+  }
+
+  if(/^(open|launch)\s+gmail$/i.test(text)){
+    launchApp("gmail");
+    return true;
+  }
+
+  if(/^(open|launch)\s+github$/i.test(text)){
+    launchApp("github");
+    return true;
+  }
+
+  if(/^(open|launch)\s+calculator$/i.test(text)){
+    displayMessage(
+      "Opening a native calculator requires the separately installed desktop companion."
+    );
+    return true;
+  }
+
+  if(BLOCKED_APP_TERMS.some(term=>lower.includes(term)) &&
+     /\b(open|launch|start)\b/.test(lower)){
+    displayMessage(
+      "This launcher does not automate banking, payment or wallet applications."
+    );
+    return true;
+  }
+
+  // Ask AI to interpret other commands. The backend must decide
+  // which tools are supported and must not execute unapproved actions.
+  return false;
+}
+
+/* =========================================
+   APP LAUNCHER
+   ========================================= */
+
+function launchApp(name){
+  if(!Object.prototype.hasOwnProperty.call(APPS,name)){
+    showToast("This application is not in the approved launcher.");
+    return;
+  }
+
+  safeOpen(APPS[name]);
+  displayMessage("Opening "+name+". Review the destination before signing in.");
+}
+
+function openCustomWebsite(){
+  let value=$("customUrl").value.trim();
+  if(!value)return showToast("Enter a website address.");
+
+  if(!/^https:\/\//i.test(value)){
+    value="https://"+value;
+  }
+
+  try{
+    const parsed=new URL(value);
+    if(parsed.protocol!=="https:")throw new Error();
+    safeOpen(parsed.href);
+    displayMessage("Opening website: "+parsed.hostname);
+  }catch{
+    showToast("Enter a valid HTTPS website address.");
+  }
+}
+
+/* =========================================
+   WEB RESEARCH
+   ========================================= */
+
+async function webResearch(){
+  const query=$("researchInput").value.trim();
+  if(!query)return showToast("Enter a research topic.");
+
+  setStatus("RESEARCHING...");
+  displayMessage("Jarvis is researching: "+query);
+
+  try{
+    const data=await apiRequest("search",{
+      query,
+      language:getLanguage()
+    });
+
+    if(typeof data.reply==="string"){
+      displayMessage(data.reply);
+    }else if(Array.isArray(data.results)){
+      displayMessage(data.results.map(item=>{
+        return [
+          item.title||"Untitled result",
+          item.url||"",
+          item.snippet||""
+        ].join("\n");
+      }).join("\n\n"));
+    }else{
+      displayMessage("Research service returned no readable results.");
+    }
+  }catch(error){
+    displayMessage("Research service unavailable. Configure the backend search provider.");
+  }
+
+  setStatus("SYSTEM ONLINE");
+}
+
+/* =========================================
+   CODING AGENT
+   ========================================= */
+
+async function codingStudio(){
+  const idea=$("codingIdea").value.trim();
+  if(!idea)return showToast("Describe the application you want.");
+
+  await runAI(
+    "Act as the coding specialist. Help design and generate the requested software. Explain files, dependencies, tests and safe setup steps.\n\nREQUEST:\n"+idea,
+    "coding",
+    {task:"software-development"}
+  );
+}
+
+/* =========================================
+   VIDEO AGENT
+   ========================================= */
+
+async function videoStudio(){
+  const idea=$("videoIdea").value.trim();
+  if(!idea)return showToast("Describe your video idea.");
+
+  const style=$("videoStyle").value;
+
+  if(!confirm("Submit this video-production request to the configured backend?"))return;
+
+  setStatus("PREPARING VIDEO REQUEST...");
+  displayMessage("Preparing cinematic video production request...");
+
+  try{
+    const data=await apiRequest("video-plan",{
+      prompt:idea,
+      style,
+      language:getLanguage()
+    });
+
+    displayMessage(
+      data.message||data.plan||data.status||
+      "Video plan request received."
+    );
+
+    if(data.videoUrl){
+      const link=document.createElement("a");
+      link.href=data.videoUrl;
+      link.target="_blank";
+      link.rel="noopener noreferrer";
+      link.textContent="Open generated video";
+      $("response").append(document.createElement("br"),link);
+    }
+
+  }catch(error){
+    displayMessage(
+      "Video service unavailable. A video-generation provider and backend integration are required. This frontend cannot render professional VFX by itself."
+    );
+  }
+
+  setStatus("SYSTEM ONLINE");
+}
+
+/* =========================================
+   ADVERTISING AGENT
+   ========================================= */
+
+async function advertisingStudio(){
+  const idea=$("adIdea").value.trim();
+  if(!idea)return showToast("Describe your advertising project.");
+
+  const format=$("adFormat").value;
+
+  await runAI(
+    "Act as an advertising and creative campaign specialist. Create a detailed, original campaign concept. Do not publish or spend money.\n\nFORMAT: "+format+"\nPROJECT: "+idea,
+    "advertising",
+    {task:"advertising-creative"}
+  );
+}
+
+/* =========================================
+   SECURITY / SCAM REVIEW
+   ========================================= */
+
+async function securityReview(){
+  const message=$("securityInput").value.trim();
+  if(!message)return showToast("Paste a message to review.");
+
+  if(message.length>CONFIG.maxInputLength){
+    return showToast("Message is too long.");
+  }
+
+  $("securityResult").textContent="Analysing suspicious content...";
+
+  try{
+    const data=await apiRequest("spam-check",{message});
+
+    const result=
+      data.explanation||data.result||data.reply||
+      "Security review completed. No detailed result returned.";
+
+    $("securityResult").textContent=result;
+
+  }catch(error){
+    $("securityResult").textContent=
+      "Security backend unavailable. Do not click suspicious links or share passwords, OTPs or financial information.";
+  }
+}
+
+/* =========================================
+   WHATSAPP DRAFT
+   ========================================= */
+
+function prepareWhatsApp(){
+  const number=$("friendNumber").value.trim();
+  const message=$("friendMessage").value.trim();
+
+  if(!/^\d{8,15}$/.test(number)){
+    return showToast("Enter an international number using digits only.");
+  }
+  if(!message)return showToast("Enter a message first.");
+
+  if(!confirm("Open WhatsApp with this message as a draft?"))return;
+
+  const url="https://wa.me/"+number+"?text="+encodeURIComponent(message);
+  safeOpen(url);
+  displayMessage("WhatsApp draft prepared. Review and send it yourself.");
+}
+
+/* =========================================
+   VOICE RECOGNITION
+   ========================================= */
+
+function startVoice(){
+  if(!$("voicePermission").checked){
+    showToast("Enable voice permission first.");
+    return;
+  }
+
+  if(!SpeechRecognition){
+    displayMessage("Voice recognition is not supported by this browser.");
+    return;
+  }
+
+  if(state.listening)return;
+
+  const recognition=new SpeechRecognition();
+  state.recognition=recognition;
+  recognition.lang=getLanguage();
+  recognition.continuous=true;
+  recognition.interimResults=false;
+  recognition.maxAlternatives=1;
+
+  recognition.onstart=()=>{
+    state.listening=true;
+    $("coreArea").classList.add("listening");
+    setStatus("LISTENING...");
+  };
+
+  recognition.onresult=async event=>{
+    const result=event.results[event.results.length-1];
+    if(!result || !result.isFinal)return;
+
+    const transcript=result[0].transcript.trim();
+    if(!transcript)return;
+
+    $("userInput").value=transcript;
+
+    // Voice commands are routed through the same command system.
+    const command=transcript.replace(/^jarvis[\s,:-]*/i,"").trim();
+
+    if(command){
+      $("userInput").value=command;
+      await askJarvis();
+    }else{
+      displayMessage("I'm listening. Please give me a command.");
+    }
+  };
+
+  recognition.onerror=event=>{
+    console.warn("Speech recognition:",event.error);
+    setStatus("VOICE ERROR");
+  };
+
+  recognition.onend=()=>{
+    state.listening=false;
+    $("coreArea").classList.remove("listening");
+    if(!state.busy)setStatus("SYSTEM ONLINE");
+    state.recognition=null;
+  };
+
+  try{
+    recognition.start();
+  }catch(error){
+    displayMessage("Unable to start microphone recognition.");
+  }
+}
+
+function stopVoice(){
+  if(state.recognition){
+    try{state.recognition.stop()}catch(error){}
+  }
+  state.listening=false;
+  $("coreArea").classList.remove("listening");
+  setStatus("MICROPHONE OFF");
+}
+
+/* =========================================
+   TEXT TO SPEECH
+   ========================================= */
+
+function speakResponse(){
+  if(!$("speechPermission").checked){
+    showToast("Enable speech permission first.");
+    return;
+  }
+
+  if(!("speechSynthesis" in window)){
+    showToast("Speech synthesis is not supported.");
+    return;
+  }
+
+  if(!state.lastResponse)return;
+
+  window.speechSynthesis.cancel();
+
+  const utterance=new SpeechSynthesisUtterance(state.lastResponse);
+  utterance.lang=getLanguage();
+  utterance.rate=1;
+  utterance.pitch=1;
+
+  utterance.onstart=()=>{
+    $("coreArea").classList.add("speaking");
+    setStatus("JARVIS SPEAKING...");
+  };
+
+  utterance.onend=()=>{
+    $("coreArea").classList.remove("speaking");
+    setStatus("SYSTEM ONLINE");
+  };
+
+  utterance.onerror=()=>{
+    $("coreArea").classList.remove("speaking");
+    setStatus("SPEECH ERROR");
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function stopSpeech(){
+  if("speechSynthesis" in window)window.speechSynthesis.cancel();
+  $("coreArea").classList.remove("speaking");
+  setStatus("SYSTEM ONLINE");
+}
+
+/* =========================================
+   BACKEND HEALTH CHECK
+   ========================================= */
+
+async function checkBackend(){
+  $("backendDiagnostic").textContent="Checking...";
+
+  try{
+    const data=await apiRequest("health",{});
+    const healthy=data.status==="ok"||data.ok===true||data.healthy===true;
+
+    setConnection(healthy);
+
+    if(healthy){
+      $("backendDiagnostic").textContent="Connected and responding";
+      showToast("Backend connection successful.");
+    }else{
+      $("backendDiagnostic").textContent="Responded; health status unclear";
+    }
+  }catch(error){
+    setConnection(false);
+    $("backendDiagnostic").textContent="Unavailable";
+    showToast("Backend is not connected.");
+  }
+}
+
+/* =========================================
+   STOP ALL ACTIVE OPERATIONS
+   ========================================= */
+
+function stopAll(){
+  stopVoice();
+  stopSpeech();
+
+  if(state.activeController){
+    state.activeController.abort();
+  }
+
+  state.busy=false;
+  $("askButton").disabled=false;
+  setThinking(false);
+  setStatus("ACTIVITY STOPPED");
+  showToast("Jarvis activity stopped.");
+}
+
+/* =========================================
+   INITIALIZATION
+   ========================================= */
+
+function initialize(){
+  state.memory=localStorage.getItem("njx_memory_enabled")==="true";
+  $("memoryPermission").checked=state.memory;
+
+  $("voicePermission").checked=false;
+  $("speechPermission").checked=false;
+
+  updateMemory();
+
+  $("frontendDiagnostic").textContent="Loaded successfully";
+  $("voiceDiagnostic").textContent=
+    SpeechRecognition?"Available in this browser":"Not supported";
+  $("secureDiagnostic").textContent=
+    window.isSecureContext?"HTTPS / secure context":"Some features need HTTPS";
+
+  setStatus("SYSTEM ONLINE");
+  setConnection(false);
+
+  // Restore a selected agent only if it is valid.
+  selectAgent("auto");
+}
+
+/* =========================================
+   EVENT LISTENERS
+   ========================================= */
+
+$("askButton").addEventListener("click",askJarvis);
+
+$("userInput").addEventListener("keydown",event=>{
+  if(event.key==="Enter"){
+    event.preventDefault();
+    askJarvis();
+  }
+});
+
+$("voiceButton").addEventListener("click",startVoice);
+$("stopButton").addEventListener("click",stopVoice);
+$("speakButton").addEventListener("click",speakResponse);
+$("stopSpeechButton").addEventListener("click",stopSpeech);
+
+$("agentList").addEventListener("click",event=>{
+  const button=event.target.closest("[data-agent]");
+  if(button)selectAgent(button.dataset.agent);
+});
+
+$("launchAppButton").addEventListener("click",()=>{
+  launchApp($("appSelect").value);
+});
+
+$("openUrlButton").addEventListener("click",openCustomWebsite);
+$("researchButton").addEventListener("click",webResearch);
+$("codingButton").addEventListener("click",codingStudio);
+$("videoButton").addEventListener("click",videoStudio);
+$("adButton").addEventListener("click",advertisingStudio);
+$("securityButton").addEventListener("click",securityReview);
+$("prepareMessageButton").addEventListener("click",prepareWhatsApp);
+
+$("memoryPermission").addEventListener("change",updateMemory);
+$("clearMemoryButton").addEventListener("click",clearMemory);
+$("exportMemoryButton").addEventListener("click",exportMemory);
+
+$("healthButton").addEventListener("click",checkBackend);
+$("stopAllButton").addEventListener("click",stopAll);
+
+$("language").addEventListener("change",()=>{
+  if(state.recognition)stopVoice();
+  showToast("Language preference updated.");
+});
+
+window.addEventListener("DOMContentLoaded",initialize);
+
+window.addEventListener("beforeunload",()=>{
+  stopVoice();
+  stopSpeech();
+});
+</script>
 </body>
 </html>
